@@ -1,60 +1,28 @@
 import flet as ft
-# from flet import alignment
-from time import sleep
 
 def main(page: ft.Page):
-    page.vertical_alignment = 'end'
-    page.window_width = 300
+    page.title = "Flet counter example"
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
 
+    txt_number = ft.TextField(value="0", text_align=ft.TextAlign.CENTER, width=100)
 
-    c = ft.Container(alignment=ft.alignment.center, width=300, height=1, bgcolor="green",
-        # animate=ft.animation.Animation(5000, ft.AnimationCurve.EASE_IN_TO_LINEAR)
-                        )
-    a = ft.Column([c],alignment= 'center')
-    a= ft.Row([c],alignment='center')
+    def minus_click(e):
+        txt_number.value = str(int(txt_number.value) - 1)
+        page.update()
 
-    def animate_container(e):
-        # c.width = 100 if c.width == 150 else 150
-        c.height = 50 if c.height == 150 else 150
-        c.bgcolor = "blue" if c.bgcolor == "red" else "red"
-        c.update()
-    # page.add(c, ft.ElevatedButton("Animate container", on_click=animate_container))
-    # while True:
-    VALOR_MAXIMO = 650
-    def Inspirar():
-        page.add(a)
-        inc = -1
-        while c.height <= VALOR_MAXIMO:
-            inc = inc+1
-            sleep(0.02)  
-            if inc == 0:  
-                c.bgcolor = 'green'
-                c.height = 0  
-            c.height += 20
-            c.update()            
-            page.update()
+    def plus_click(e):
+        txt_number.value = str(int(txt_number.value) + 1)
+        page.update()
 
-
-    def Expirar():
-        page.add(a)
-        inc = -1
-        while c.height >0:
-            inc = inc+1
-            sleep(0.07)  
-            if inc == 0:  
-                c.bgcolor = 'yellow'
-                c.height = VALOR_MAXIMO  
-            c.height -= 5
-            c.update()            
-            page.update()           
-    
-    while True:
-        Inspirar()
-        Expirar()
-    # page.add(c)
-
-
-
-
+    page.add(
+        ft.Row(
+            [
+                ft.IconButton(ft.icons.REMOVE, on_click=minus_click),
+                txt_number,
+                ft.IconButton(ft.icons.ADD, on_click=plus_click),
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+        )
+    )
 
 ft.app(target=main, view=ft.AppView.WEB_BROWSER)
